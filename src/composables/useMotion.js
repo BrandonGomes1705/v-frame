@@ -1,13 +1,15 @@
-import { onMounted } from "vue"
+import { Tween, Easing } from "@tweenjs/tween.js";
+import { onMounted, watch, ref } from "vue"
 
 export default function useMotion(element) {
 
-    let transformProperties = {
+    const transformProperties = ref({
         x: 0,
         y: 0,
         scale: 1,
         rotate: 0,
-    }
+    })
+
     const isTransformProperty = (style) => {
         return ['x', 'y', 'rotate', 'scale'].includes(style);
     }
@@ -28,13 +30,36 @@ export default function useMotion(element) {
 
     const setStyle = (style, value) => {
         if(isTransformProperty(style)) {
-            transformProperties[style] = value;
+            transformProperties.value[style] = value;
         }
+    }
+
+    const animateTo = (style, value) => {
+        if(transformProperties.value[style] !== value) {
+        
+            let data = {value: transformProperties.value[style]};
+            let tween = new Tween(data)
+                            .to({value: value})
+                            .easing(Easing.Elastic.Out)
+                            .onUpdate((e) => {
+                                transformProperties.value[style] = data.value;
+                            })
+                            .start();
+
+            let animate = (time) => {
+                requestAnimationFrame(animate)
+                tween.update(time)
+            }
+
+            requestAnimationFrame(animate)
+        }
+        
+
     }
 
     const generateStyles = () => {
         let transform = '';
-        for (const [key, value] of Object.entries(transformProperties)) {
+        for (const [key, value] of Object.entries(transformProperties.value)) {
             transform += ` ${transformString(key, value)}`;
         }
         element.style.transform = transform;
@@ -42,11 +67,16 @@ export default function useMotion(element) {
 
     const setStyles = (initial) => {
         for (const [key, value] of Object.entries(initial)) {
-            setStyle(key, value);
+            animateTo(key, value);
         }
-
-        generateStyles();
     }
+
+    watch(transformProperties, 
+        () => {
+            generateStyles();
+        },
+        {deep: true,}
+    )
 
     return {
         setStyles,

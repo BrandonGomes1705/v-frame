@@ -4,7 +4,6 @@
         <div class="flex justify-center">
             <motion-div
                 class="h-20 w-20 shadow bg-white rounded-lg"
-                :initial="{ scale: 0.5 }"
                 :animate="{ 
                         y: y,
                         x: x,
