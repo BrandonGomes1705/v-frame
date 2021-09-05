@@ -1,10 +1,10 @@
 <template>
-    <div ref="element" class="transition-all ease-out duration-200">
+    <div ref="element">
         <slot/>
     </div>
 </template>
 <script setup>
-import {computed, defineProps, nextTick, onMounted, ref, watch} from 'vue';
+import {computed, nextTick, onMounted, ref, watch} from 'vue';
 import UseMotion from '../../composables/useMotion'
 
 const props = defineProps({
@@ -23,15 +23,17 @@ const currentStyles = computed(() => {
 });
 
 const element = ref(null)
-let setStyles = null;
+let setStylesFn = null;
 
 onMounted(async () => {
-    setStyles = UseMotion(element.value).setStyles;
-    setStyles(props.initial);
-    requestAnimationFrame(() => setStyles(props.animate))
+    let {setInitialStyles, setStyles} = UseMotion(element.value);
+    setInitialStyles(props.initial);
+
+    setStylesFn = setStyles;
+    requestAnimationFrame(() => setStylesFn(props.animate))
 })
 
 watch(currentStyles, (newVal) => {
-        requestAnimationFrame(() => setStyles(newVal))
+        requestAnimationFrame(() => setStylesFn(newVal))
 })
 </script>

@@ -4,11 +4,16 @@
         <div class="flex justify-center">
             <motion-div
                 class="h-20 w-20 shadow bg-white rounded-lg"
+                :initial="{ 
+                        y: -20,
+                        opacity: 0
+                    }"
                 :animate="{ 
-                        y: y,
-                        x: x,
+                        y,
+                        x,
                         scale: scale/4,
-                        rotate: rotate,
+                        rotate,
+                        opacity: 1
                     }"
             />
         </div>
