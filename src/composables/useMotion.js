@@ -69,7 +69,7 @@ export default function useMotion(element) {
      * @returns {*}
      */
     const getEasingForStyle = (style) => {
-        if(['x', 'y', 'rotate'].includes(style)) {
+        if(['x', 'y', 'rotate','scale'].includes(style)) {
             return springEase;
         }
         if(style == 'opacity') {
@@ -99,7 +99,7 @@ export default function useMotion(element) {
 
             // create the transition instance.
             tweens.value[style] = new Tween(data)
-                .to({value: value})
+                .to({value: value},)
                 .easing(getEasingForStyle(style))
                 .onUpdate(() => {
                     animatableProperties.value[style] = data.value;
@@ -148,7 +148,7 @@ export default function useMotion(element) {
      */
     const setStyles = (styles) => {
         for (const [key, value] of Object.entries(styles)) {
-            transitionTo(key, parseInt(value));
+            transitionTo(key, parseFloat(value));
         }
     }
 

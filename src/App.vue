@@ -8,8 +8,8 @@
             <motion-div
                 class="h-20 w-20 shadow bg-white rounded-lg"
                 :initial="{ 
-                        y: -20,
-                        opacity: 0
+                        scale: 0.8,
+                        rotate: 180,
                     }"
                 :animate="{ 
                         y,
@@ -17,6 +17,10 @@
                         scale: scale/4,
                         rotate,
                         opacity: 1
+                    }"
+                :while-hover="{
+                        scale: 1.2,
+                        rotate: 90
                     }"
             />
         </div>

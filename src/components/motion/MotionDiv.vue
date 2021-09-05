@@ -1,5 +1,5 @@
 <template>
-    <div ref="element">
+    <div ref="element" @mouseenter="onHover" @mouseleave="reset">
         <slot/>
     </div>
 </template>
@@ -15,6 +15,10 @@ const props = defineProps({
     animate: {
         type: Object,
         default: {},
+    },
+    whileHover: {
+        type: Object,
+        default: {},
     }
 })
 
@@ -25,15 +29,23 @@ const currentStyles = computed(() => {
 const element = ref(null)
 let setStylesFn = null;
 
+const onHover = () => {
+    setStylesFn(props.whileHover);
+}
+
+const reset = () => {
+    setStylesFn(props.animate);
+}
+
 onMounted(async () => {
     let {setInitialStyles, setStyles} = UseMotion(element.value);
     setInitialStyles(props.initial);
 
     setStylesFn = setStyles;
-    requestAnimationFrame(() => setStylesFn(props.animate))
+    setStylesFn(props.animate);
 })
 
 watch(currentStyles, (newVal) => {
-        requestAnimationFrame(() => setStylesFn(newVal))
+        setStylesFn(newVal)
 })
 </script>
