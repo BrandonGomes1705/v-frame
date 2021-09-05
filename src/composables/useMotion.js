@@ -52,6 +52,16 @@ export default function useMotion(element) {
         }
     }
 
+    const springEase = (x) => {
+        const c4 = (2 * Math.PI) / 5;
+
+        return x === 0
+        ? 0
+        : x === 1
+        ? 1
+        : Math.pow(2.5, -10 * x) * Math.sin((x * 10 - 0.75) * c4) + 1;
+    }
+
     /**
      * Gets the transition easing for the specified style.
      * 
@@ -60,7 +70,7 @@ export default function useMotion(element) {
      */
     const getEasingForStyle = (style) => {
         if(['x', 'y', 'rotate'].includes(style)) {
-            return Easing.Elastic.Out;
+            return springEase;
         }
         if(style == 'opacity') {
             return Easing.Linear.None;
@@ -164,5 +174,6 @@ export default function useMotion(element) {
     return {
         setStyles,
         setInitialStyles,
+        springEase,
     }
 }

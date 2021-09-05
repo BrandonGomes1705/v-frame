@@ -4,7 +4,7 @@
     </div>
 </template>
 <script setup>
-import {computed, nextTick, onMounted, ref, watch} from 'vue';
+import {computed, onMounted, ref, watch} from 'vue';
 import UseMotion from '../../composables/useMotion'
 
 const props = defineProps({
