@@ -1,73 +1,34 @@
 
 <template>
     <div class="space-y-20 mt-32">
-        <div class="flex justify-center space-x-10">
-            <motion-div class="p-5 bg-white rounded-lg shadow" :initial="{scale: 0, rotate: -180}" :animate="{scale:1, rotate: 0,}">
-                Motion Div
-            </motion-div>
-            <motion-div
-                class="h-20 w-20 shadow bg-white rounded-lg"
-                :initial="{ 
-                        scale: 0.8,
-                        rotate: 180,
-                    }"
-                :animate="{ 
-                        y,
-                        x,
-                        scale: scale/4,
-                        rotate,
-                        opacity: 1
-                    }"
-                :while-hover="{
-                        scale: 1.2,
-                        rotate: 90
-                    }"
-            />
-        </div>
-        <div class="flex justify-start">
-            <div v-for="data in graph" :key="data" :style="'height: ' + data*100 + 'px'" class="border-b border-red-500 w-1"/>
-        </div>
+        <!-- <div class="flex justify-center space-x-10">
+            <test-motion-div/>
+        </div> -->
         <div class="flex justify-center">
-            <div class="flex flex-col space-y-5">
-                <div>
-                    <p>X</p>
-                    <input v-model="x" type="range" min="-100" max="100">
-                </div>
-                
-                <div>
-                    <p>Y</p>
-                    <input v-model="y" type="range" min="-100" max="100">
-                </div>
-
-                <div>
-                    <p>Rotate</p>
-                    <input v-model="rotate" type="range" min="0" max="360">
-                </div>
-
-                <div>
-                    <p>Scale</p>
-                    <input v-model="scale" type="range" min="0" max="8">
-                </div>
-            </div>
+            <shared-layout-div class="grid grid-cols-8 gap-2 p-5 bg-red-500 rounded-lg select-none" @click.native="count++">
+                <motion-div :initial="{ scale: 0}" 
+                    :animate="{ scale: 1}" 
+                    v-for="n in count" 
+                    :key="n" 
+                    class="p-5 rounded-lg bg-white shadow-xl h-10 w-10"
+                >
+                        {{ n }}
+                    </motion-div>
+            </shared-layout-div>
         </div>
     </div>
 </template>
 
 <script setup>
-import { ref } from "vue";
-import MotionDiv from "./components/motion/MotionDiv.vue";
 import useMotion from "./composables/useMotion";
+import TestMotionDiv from "./components/TestMotionDiv.vue"
+import SharedLayoutDiv from "./components/motion/SharedLayoutDiv.vue"
+import MotionDiv from "./components/motion/MotionDiv.vue"
+import {ref} from 'vue';
 
-const { springEase } = useMotion(); 
-const graph = ref([]);
-for(let i = 0; i < 100; i++) {
-    graph.value.push(springEase(i/100))
-}
+const count = ref(1);
 
-const y = ref(0);
-const x = ref(0);
-const scale = ref(4);
-const rotate = ref(0);
+
 </script>
 
 <style>

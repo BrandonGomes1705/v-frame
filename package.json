@@ -8,6 +8,7 @@
   },
   "dependencies": {
     "@tweenjs/tween.js": "^18.6.4",
+    "flipping": "^1.1.0",
     "vue": "^3.2.6"
   },
   "devDependencies": {
